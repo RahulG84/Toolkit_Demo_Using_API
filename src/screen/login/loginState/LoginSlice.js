@@ -22,7 +22,7 @@ export const loginAction = createAsyncThunk(
   },
 );
 
-// export const getToken = createAsyncThunk('getToken', async () => {
+// export const storedToken = createAsyncThunk('getToken', async () => {
 //   try {
 //     const token = await AsyncStorage.getItem('tokne');
 //     console.log('Stored-token', token);
@@ -31,6 +31,15 @@ export const loginAction = createAsyncThunk(
 //     console.log(error);
 //   }
 // });
+
+// export const getToken = async () => {
+//   try {
+//     const token = await AsyncStorage.getItem('token');
+//     return token;
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
 
 const LoginSlice = createSlice({
   name: 'login',
@@ -43,7 +52,12 @@ const LoginSlice = createSlice({
   reducers: {
     logout: (state, action) => {
       state.token = null;
+      state.isLoading = false;
       AsyncStorage.removeItem('token');
+    },
+    getToken: async (state, action) => {
+      const token = await AsyncStorage.getItem('token');
+      return token;
     },
   },
   extraReducers: builder => {
@@ -51,7 +65,7 @@ const LoginSlice = createSlice({
       state.status = action.payload.status;
       state.success = action.payload.success;
       state.token = action.payload.token;
-      state.isLoading = false;
+      state.isLoading = true;
     });
 
     builder.addCase(loginAction.rejected, (state, action) => {
@@ -65,7 +79,7 @@ const LoginSlice = createSlice({
   },
 });
 
-export const {logout} = LoginSlice.actions;
+export const {logout, getToken} = LoginSlice.actions;
 export default LoginSlice.reducer;
 
 // superexaze@exazeit.com
