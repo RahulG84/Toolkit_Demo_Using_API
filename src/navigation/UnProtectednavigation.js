@@ -4,7 +4,7 @@ import LoginScreen from '../screen/login/LoginScreen';
 
 const Stack = createNativeStackNavigator();
 
-const NonProtectednavigation = () => {
+const UnProtectednavigation = () => {
   return (
     <Stack.Navigator initialRouteName="LoginScreen">
       <Stack.Screen
@@ -16,4 +16,4 @@ const NonProtectednavigation = () => {
   );
 };
 
-export default NonProtectednavigation;
+export default UnProtectednavigation;

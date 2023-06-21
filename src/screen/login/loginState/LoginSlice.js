@@ -1,7 +1,8 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const loginAction = createAsyncThunk(
-  'auth/login',
+  'login',
   async ({email, password}) => {
     try {
       const response = await fetch(
@@ -11,15 +12,25 @@ export const loginAction = createAsyncThunk(
         },
       );
       const data = await response.json();
-      console.log(data);
       const result = data;
       console.log(result);
+      await AsyncStorage.setItem('token', result.token);
       return result;
     } catch (error) {
       throw new Error('Login failed');
     }
   },
 );
+
+// export const getToken = createAsyncThunk('getToken', async () => {
+//   try {
+//     const token = await AsyncStorage.getItem('tokne');
+//     console.log('Stored-token', token);
+//     return token;
+//   } catch (error) {
+//     console.log(error);
+//   }
+// });
 
 const LoginSlice = createSlice({
   name: 'login',
@@ -32,6 +43,7 @@ const LoginSlice = createSlice({
   reducers: {
     logout: (state, action) => {
       state.token = null;
+      AsyncStorage.removeItem('token');
     },
   },
   extraReducers: builder => {

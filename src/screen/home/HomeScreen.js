@@ -8,15 +8,22 @@ import {logout} from '../login/loginState/LoginSlice';
 export default function HomeScreen() {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const {status} = useSelector(state => state.loginReducer);
+  const {status, token} = useSelector(state => state.loginReducer);
+
   const onLogoutPress = () => {
-    navigation.navigate('LoginScreen');
     dispatch(logout());
+    navigation.navigate('LoginScreen');
   };
+
   return (
     <View style={style.containerView}>
-      <Text style={style.statusText}>{status}</Text>
-      <Button mode="contained" onPress={() => onLogoutPress()}>
+      <Text style={style.statusText}>{status} And your token is</Text>
+      <Text style={style.tokenText}>{token}</Text>
+      <Button
+        mode="contained"
+        buttonColor="blue"
+        style={style.buttonStyle}
+        onPress={() => onLogoutPress()}>
         Logout
       </Button>
     </View>
@@ -33,6 +40,15 @@ const style = StyleSheet.create({
   containerView: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
+    margin: 30,
+  },
+  tokenText: {
+    fontSize: 15,
+    color: 'black',
+    fontWeight: '300',
+  },
+  buttonStyle: {
+    marginTop: 30,
+    width: '70%',
   },
 });
