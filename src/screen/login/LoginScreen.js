@@ -18,15 +18,19 @@ const LoginScreen = () => {
   const [isError, setIsError] = useState(false);
   const [isProcess, setIsProcess] = useState(false);
 
-  const iseLoading = useSelector(state => state.loginReducer.isLoading);
-  console.log(iseLoading);
+  const iseLoading = useSelector(state => state.loginReducer.isLoading); // initialy isloading is false
+  console.log('initial iseLoading', iseLoading);
 
   const handleLogin = () => {
     if (!iseLoading) {
       dispatch(loginAction({email, password}));
       navigation.navigate('HomeScreen');
-      setIsError(!isError);
       setIsProcess(iseLoading);
+    }
+  };
+  const handleValidation = () => {
+    if (email === '' || password === '') {
+      setIsError(!isError);
     }
   };
 
@@ -67,7 +71,10 @@ const LoginScreen = () => {
       <View style={styles.buttonView}>
         <Button
           mode="contained"
-          onPress={() => handleLogin()}
+          onPress={() => {
+            handleLogin();
+            handleValidation();
+          }}
           style={styles.button}>
           Home
         </Button>

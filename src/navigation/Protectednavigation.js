@@ -6,7 +6,7 @@ const Stack = createNativeStackNavigator();
 
 const Protectednavigation = () => {
   return (
-    <Stack.Navigator initialRouteName="HomeScreen">
+    <Stack.Navigator>
       <Stack.Screen
         name="HomeScreen"
         component={HomeScreen}
