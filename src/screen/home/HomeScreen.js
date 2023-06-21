@@ -8,11 +8,17 @@ import {logout} from '../login/loginState/LoginSlice';
 export default function HomeScreen() {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const {status, token} = useSelector(state => state.loginReducer);
+  const {status, token, isLoading} = useSelector(state => state.loginReducer);
+
+  console.log('loutout isloading', isLoading);
 
   const onLogoutPress = () => {
     dispatch(logout());
-    navigation.navigate('LoginScreen');
+  };
+  const redirect = () => {
+    if (!isLoading) {
+      navigation.navigate('LoginScreen');
+    }
   };
 
   return (
@@ -23,12 +29,18 @@ export default function HomeScreen() {
         mode="contained"
         buttonColor="blue"
         style={style.buttonStyle}
-        onPress={() => onLogoutPress()}>
+        onPress={() => {
+          onLogoutPress();
+          redirect();
+        }}>
         Logout
       </Button>
     </View>
   );
 }
+
+//superexaze@exazeit.com
+//super@exaze
 
 const style = StyleSheet.create({
   statusText: {

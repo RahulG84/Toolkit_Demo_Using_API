@@ -1,11 +1,6 @@
 import React, {useState} from 'react';
 import {View, StatusBar, ScrollView, StyleSheet} from 'react-native';
-import {
-  TextInput,
-  Button,
-  ActivityIndicator,
-  HelperText,
-} from 'react-native-paper';
+import {TextInput, Button, ActivityIndicator} from 'react-native-paper';
 import {useDispatch, useSelector} from 'react-redux';
 import {loginAction} from './loginState/LoginSlice';
 import {useNavigation} from '@react-navigation/native';
@@ -15,27 +10,23 @@ const LoginScreen = () => {
   const dispatch = useDispatch();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isError, setIsError] = useState(false);
   const [isProcess, setIsProcess] = useState(false);
 
-  const iseLoading = useSelector(state => state.loginReducer.isLoading); // initialy isloading is false
-  console.log('initial iseLoading', iseLoading);
+  const isLoading = useSelector(state => state.loginReducer.isLoading); // initialy isloading is false
+  console.log('initial iseLoading', isLoading);
 
   const handleLogin = () => {
-    if (!iseLoading) {
-      dispatch(loginAction({email, password}));
-      navigation.navigate('HomeScreen');
-      setIsProcess(iseLoading);
-    }
+    dispatch(loginAction({email, password}));
   };
-  const handleValidation = () => {
-    if (email === '' || password === '') {
-      setIsError(!isError);
+
+  const redirection = () => {
+    if (isLoading) {
+      navigation.navigate('HomeScreen');
+      setIsProcess(!isProcess);
     }
   };
 
-  console.log('after hitting islogin', iseLoading);
-  console.log('is Error', isError);
+  console.log('after hitting islogin', isLoading);
 
   //superexaze@exazeit.com
   //super@exaze
@@ -61,11 +52,6 @@ const LoginScreen = () => {
           onChangeText={pass => setPassword(pass)}
         />
       </View>
-      {isError ? (
-        <HelperText type="error">
-          Please Enter Correct Email And Password
-        </HelperText>
-      ) : null}
       {isProcess ? <ActivityIndicator color="blue" /> : null}
 
       <View style={styles.buttonView}>
@@ -73,7 +59,7 @@ const LoginScreen = () => {
           mode="contained"
           onPress={() => {
             handleLogin();
-            handleValidation();
+            redirection();
           }}
           style={styles.button}>
           Home
